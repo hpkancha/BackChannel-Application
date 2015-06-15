@@ -1,0 +1,22 @@
+<% if User.find_by_id(session[:user_id]).isadmin %>
+    <h1>Post Activity</h1>
+    <table>
+      <tr>
+        <th>Username</th>
+        <th>Post Title</th>
+        <th>Votes</th>
+      </tr>
+      <% @votes.each do |post_id, votes| %>
+          <tr>
+            <td><%= User.find_by_id(Post.find_by_id(post_id).user_id).username %>&nbsp; &nbsp; &nbsp; &nbsp;</td>
+
+            <td><%= Post.find_by_id(post_id).title %>&nbsp; &nbsp; &nbsp; &nbsp;</td>
+
+            <td><%= votes.to_s + ' Votes' %></td>
+          </tr>
+      <% end %>
+    </table>
+<% else %>
+    <h1>You are not authorized to view this page</h1>
+<% end %>
+

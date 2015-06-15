@@ -1,0 +1,24 @@
+<h1 align="center">Search</h1>
+
+<table align="center">
+  <tr>
+    <th><%= label_tag :Username %></th>
+    <td><%= text_field_tag :username, params[:username] %></td>
+    <td><%= submit_tag "Search" %></td>
+  </tr>
+
+  <tr>
+    <th><%= label_tag :Category %></th>
+    <td><%= select("search", "category_id", Category.find(:all).collect{ |c| [ c.name, c.id] }) %></td>
+    <td><%= submit_tag "Search" %></td>
+  </tr>
+
+  <tr>
+    <th><%= label_tag :Content %></th>
+    <td><%= text_field_tag :content, params[:content] %></td>
+    <td><%= submit_tag "Search" %></td>
+  </tr>
+</table>
+
+
+<br />

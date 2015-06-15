@@ -1,0 +1,34 @@
+<h1 align="center"><%= @msg %></h1>
+
+<table>
+
+  <% @posts.sort{|a, b| a.updated_at <=> b.updated_at}.reverse.each do |post| %>
+      <tr>
+        <td width = "1024" style="background-color:#cadcdc"><b style="color:#db1309">
+          <%= User.find(post.user_id).username %></b> <br/>
+          <b><%= post.title %></b> &nbsp; &nbsp; &nbsp; &nbsp;
+          <b>Category: #<%= Category.find_by_id(post.category_id).name %></b><br/>
+          <%= post.message %> <br/>
+          <%= link_to Comment.find_all_by_post_id(post.id).count.to_s + ' Comments',
+                      :action => "index", :controller  => "comments", :postid => post.id %>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <% if @userVoted[post.id] && session[:user_id] != nil %>
+              <%= link_to 'You and ' + (Vote.find_all_by_post_id(post.id).count - 1).to_s + ' others voted',
+                          :action => "index", :controller  => "votes", :postid => post.id %><br/>
+          <% else %>
+              <%= link_to Vote.find_all_by_post_id(post.id).count.to_s + ' Votes',
+                          :action => "index", :controller  => "votes", :postid => post.id %><br/>
+          <% end %>
+        </td>
+        <% if @isOwnPost[post.id] %>
+            <td><%= link_to 'Edit', edit_post_path(post) %></td>
+            <td><%= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% else %>
+            <% if !@userVoted[post.id] %>
+                <td><%= link_to 'Vote', :action => "update_votes",
+                                :controller  => "votes", :postid => post.id %></td>
+            <% end %>
+        <% end %>
+      </tr>
+  <% end %>
+</table>

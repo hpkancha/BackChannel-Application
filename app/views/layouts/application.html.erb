@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BackchannelApplication</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<table width= "100%" style="background-color:#0639db">
+  <tr>
+    <td>
+      <h3 style="color:#f5fff5">
+        <% if session[:user_id] != nil %>
+            <%= link_to "BackChannel Application > Home", posts_url,
+                                            {:style=>'color:#f5fff5;', :class => "css_class"} %>
+            <% else %>
+            BackChannel Application
+            <% end %></h3>
+    </td>
+    <td style="color:#f5fff5">
+        <%= form_tag({:controller=>:posts ,:action =>:search}, :method => "get") do %>
+            <%= label_tag(:q, "Search for:") %>
+            <%= text_field_tag(:q) %>
+            <%= select_tag(:user_opt, options_for_select( [['content', 1], ['users', 2], ['category', 3]])) %>
+            <%= submit_tag("Search") %>
+        <% end %>
+    </td>
+    <td><h3 style="color:#f5fff5"><%= link_to "Admin Tasks", "users/admin.html", {:style=>'color:#f5fff5;', :class => "css_class"} if
+                    User.find_by_id(session[:user_id]).isadmin unless session[:user_id] == nil
+                                       %></h3></td>
+    <td><h3 style="color:#f5fff5"> <%= User.find_by_id(session[:user_id]).username unless
+                                               session[:user_id] == nil %></h3></td>
+    <td><h3 style="color:#f5fff5"><%= link_to "Logout", :log_out, {:style=>'color:#f5fff5;', :class => "css_class"} unless
+                                              session[:user_id] == nil  %></h3></td>
+  </tr>
+</table>
+
+<%= yield %>
+
+</body>
+</html>

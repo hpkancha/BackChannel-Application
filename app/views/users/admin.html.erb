@@ -1,0 +1,11 @@
+<% if User.find_by_id(session[:user_id]).isadmin %>
+    <h1>Admin Tasks</h1>
+<table width= "100%" cellpadding="0" border-spacing="0">
+    <tr><h3><%= link_to "View User Credentials/ Privileges", users_url %></h3></tr>
+    <tr><h3><%= link_to "Add/Remove Categories", categories_path %></h3></tr>
+    <tr><h3><%= link_to "View Post Activity", :action => "activity", :controller  => "posts" %></h3></tr>
+</table>
+<% else %>
+    <h1>You are not authorized to view this page</h1>
+<% end %>
+
